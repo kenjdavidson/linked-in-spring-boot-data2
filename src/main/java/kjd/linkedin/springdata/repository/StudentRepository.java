@@ -6,7 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import kjd.linkedin.springdata.domain.Student;
 
-public interface StudentRepository extends CrudRepository<Student, Long> {
+public interface StudentRepository extends CrudRepository<Student, String> {
     // Simple query methods
     List<Student> findByFullTime(boolean fullTime);
     List<Student> findByAttendeeYearOfBirth(Integer yearOfBirth);

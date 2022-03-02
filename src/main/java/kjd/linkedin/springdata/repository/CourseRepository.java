@@ -2,18 +2,18 @@ package kjd.linkedin.springdata.repository;
 
 import java.util.List;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import kjd.linkedin.springdata.domain.Course;
 
-public interface CourseRepository extends JpaRepository<Course, Long> {
+public interface CourseRepository extends MongoRepository<Course, String> {
     
     Course findByName(String name);
 
     List<Course> findByDepartmentChairPersonLastName(String lastName);
     
-    @Query("select c from Course c where c.department.chair.person.lastName=:chair")
+    @Query("{ person.firstName : ?0 }")
     List<Course> findByChairLastName(@Param("chair") String lastName);
 }

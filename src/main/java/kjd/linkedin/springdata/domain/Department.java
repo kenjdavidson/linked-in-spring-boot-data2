@@ -3,16 +3,9 @@ package kjd.linkedin.springdata.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -32,8 +25,7 @@ import lombok.ToString;
  * 
  * @author kenjdavidson
  */
-@Entity
-@Table(name="departments")
+@Document
 @RequiredArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
@@ -42,18 +34,15 @@ import lombok.ToString;
 @ToString
 public class Department {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
-    private Long id;
+    private String id;
 
-    @Column
     @NonNull
     private String name;
 
-    @OneToMany(mappedBy = "department", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @DBRef
     private List<Course> courses = new ArrayList<>();
 
-    @ManyToOne
+    @DBRef
     private Staff chair;
 
     public Department(String name, Staff chair) {

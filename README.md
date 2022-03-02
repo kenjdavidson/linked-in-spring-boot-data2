@@ -148,7 +148,9 @@ See example(s):
 - `DepartmentRepositoryTest`
 
 
-## Quering with Spring 
+## Chapter 4: Querying with JPA
+
+### Quering with Spring 
 
 When needing to write/lookup details using more specific requirements.
 
@@ -164,7 +166,7 @@ Rules:
 
 Check out **https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repository-query-keywords** of the Spring Data repository for all the list of keywords.
 
-## @Query Methods
+### @Query Methods
 
 Some of reasons for using `@Query`:
 
@@ -181,7 +183,7 @@ Some of reasons for using `@Query`:
 > Setting `nativeQuery=true` within the `@Query` by using the new command with the supplied Class
 > `select new kjd.linkedin.springdata.dto.CourseView (c.name, ...) from Course c where c.id=:id`
 
-## Query By Example
+### Query By Example
 
 - User friendly alternative to SQL
 - Lookup objects similar to other objects
@@ -189,7 +191,7 @@ Some of reasons for using `@Query`:
 
 using the `extends QueryByExampleExecutor<T>`.
 
-### How to Create an Example
+#### How to Create an Example
 
 - First by using the `Example.of<T>(T probe)`
 
@@ -209,3 +211,21 @@ Using the builder pattern a number of queries can be added to the Example
 departmentRepository.findOne(Example.of(new Department("sciences", null), 
     ExampleMatcher.matching().withIgnoreCase().withStringMatcher(StringMatcher.ENDING))));
 ```
+
+## Chapter 5: Repository Types
+
+### Mongo
+
+All the usual changes:
+
+- Ids to String
+- Extending classes
+- Etc.
+
+`git checkout mongo`
+
+### JDBC
+
+### Reactive
+
+### Other

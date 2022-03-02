@@ -3,18 +3,9 @@ package kjd.linkedin.springdata.domain;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -33,39 +24,29 @@ import lombok.ToString;
  * 
  * @author kenjdavidson
  */
-@Entity
-@Table(name="courses")
-@RequiredArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PACKAGE)
+@Document
+@NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 @Getter
 @Setter
 @ToString
 public class Course {
     @Id
-    @GeneratedValue
-    @Column
-    private Long id;
+    private String id;
 
-    @Column
-    @NonNull
     private String name;
 
-    @OneToOne
+    @DBRef
     private Staff professor;
 
-    @ManyToOne
-    @JoinColumn(name="dept_id")
+    @DBRef
     private Department department;
 
     /**
      * Should maybe be {@code @ManyToMany} since a course could be a prerequisite for multiple other
      * courses?
      */
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name="course_prerequisites",
-                joinColumns = { @JoinColumn(name = "prerequisite_id") },
-                inverseJoinColumns = { @JoinColumn(name = "course_id") })
+    @DBRef
     private Set<Course> prerequisites = new HashSet<>();
 
     public Course(String name, Staff prof, Department department) {
