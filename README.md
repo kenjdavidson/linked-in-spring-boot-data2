@@ -209,3 +209,30 @@ Using the builder pattern a number of queries can be added to the Example
 departmentRepository.findOne(Example.of(new Department("sciences", null), 
     ExampleMatcher.matching().withIgnoreCase().withStringMatcher(StringMatcher.ENDING))));
 ```
+
+## Chapter 5: More Repository types
+
+### Mongo
+
+See `mongo` branch
+
+### JDBC
+
+No branch availble
+
+Pros:
+- Sql statements are invoked only when needed, fully loaded objects
+
+Cons:
+- Many-to-one and many-to-many relationships not supported
+
+> Parent and child object lifecycles are coupled, Point of operator persistent not obvious.
+> `Staff` can only have one `Department` as `chairOf` which is referenced by `departmentId`?
+
+Requires two rows in a `chair` table by `departmentId` with duplicate data for `Staff` info.
+
+### Reactive
+
+See `mongo-reactive` branch
+
+### Other
