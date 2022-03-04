@@ -235,4 +235,98 @@ Requires two rows in a `chair` table by `departmentId` with duplicate data for `
 
 See `mongo-reactive` branch
 
+Uses reactive objects for handling data:
+
+- `Mono` is a single result
+- `Flux` is a 0 or many result
+
+The `Mono` and `Flux` are subscribed to which trigger the interaction.
+
 ### Other
+
+A number of other libraries support the data abstraction:
+
+- Gemfire (spring-data-gemfire)
+- KeyValue (spring-data-keyvalue)
+- Cassandra (spring-data-cassandra)
+- Solr (spring-data-solr)
+
+## Special Features
+
+A discussion about some of the **automagic** done to get `Repository`(ies) available.
+
+### Spring Data REST
+
+The **magic** that gets the `Repository`(ies) published as REST resources.  Some examples are:
+
+- `GET /resource` -> `CrudRepository#findAll()`
+- `GET /resources` -> `CrudRepository#findAll()`
+- `GET /resource/:id` -> `CrudRepository#findOne(id)`
+- `GET /resource/search/:queryMethod?[param=value...]` -> `CrudRepository.queryMethod(paramValue...)`
+- `POST`
+- `PUT`
+- `PATCH`
+- `DELETE`
+
+> Also covered fully in the Spring Boot Microservices class taught by Mary Ellen Bowman.
+
+## QueryDSL Spring Data Extension
+
+Standard repository queries are created by:
+
+- Providing multiple methods using the naming conventions
+- Overloading methods providing correct annotations
+
+Query DSL provides the `QueryDSLPredicateExecutor` will overload:
+
+- find
+- count
+- exists
+
+methods.
+
+### Q Classes
+
+For example
+
+```
+public class StudentExpressions {
+    public static BooleanExpression hasLastName(String lastName) {
+        return QStudent.student.attendee.lastName.eq(lastName);
+    }
+}
+
+studentRepository.findAll(hasLastName("smith").and(isFullTime()).and(isOlderThan(20)));
+```
+
+> www.querydsl.com
+
+## Auditing
+
+Auditing entities:
+
+### Annotations
+
+Some examples:
+
+- `@CreatedDate`
+- `@createdBy`
+- `@LastModifiedDate`
+- `@LastModifiedBy`
+
+which can be a number of types.
+
+### AbstractAuditable
+
+Extend entity from `AbstractAuditable`.
+
+## Read-Only Repository Pattern
+
+Restrict a repository from creating/updating data.  This is done by extending from `Repostory` and annotate with `@NoRepositoryBean` and add the signature of the allowed methods.
+
+The pattern for this is:
+
+1. Creating a new `ReadOnlyRepository`
+2. Adding a new `CourseQueryRepository extends ReadOnlyRepository`
+
+then adding all query methods to this new class, instead of the standard CRUD repository.
